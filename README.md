@@ -40,7 +40,7 @@ Create a `terraform.tfvars` file based on the provided `terraform.tfvars.example
 In the `deploy.sh` file, add the CDN domain address to the following line:
 
 ```bash
-CDN_NAME="<CDN_DOMAIN>"
+CDN_NAME="<CDN_URL>"
 ```
 
 ### Deployment
