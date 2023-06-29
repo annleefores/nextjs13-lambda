@@ -7,7 +7,7 @@ CDN_DOMAIN="<CDN_DOMAIN>"
 LAMBDA_FUNCTION_NAME="<LAMBDA_FUNCTION_NAME>"
 
 
-if [ "$1" -eq 0 ]; then
+if [ "$1" = 0 ]; then
     echo "No arguments provided. Please provide 'deploy' or 'sync' as an argument."
     exit 1
 fi
