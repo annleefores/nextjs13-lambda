@@ -12,7 +12,7 @@ if [ "$1" -eq 0 ]; then
     exit 1
 fi
 
-if [ "$1" != "deploy" ] && [ "$1" != "sync" ]; then
+if [ "\$1" != "deploy" ] && [ "\$1" != "sync" ]; then
     echo "Invalid argument. Please provide 'deploy' or 'sync' as an argument."
     exit 1
 fi
@@ -45,7 +45,7 @@ cp -r public/. .next/standalone/public
 cp $file_dir_name/run.sh .next/standalone/
 
 
-if [ "$1" = "deploy" ]; then
+if [ "\$1" = "deploy" ]; then
     echo "Running deploy command..."
 
     echo "provisioning infrastructure"
@@ -64,7 +64,7 @@ if [ "$1" = "deploy" ]; then
     terraform apply -auto-approve
 
 
-elif [ "$1" = "sync" ]; then
+elif [ "\$1" = "sync" ]; then
     echo "Running sync command..."
 
     cd .next/standalone/
