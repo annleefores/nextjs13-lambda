@@ -58,7 +58,7 @@ variable "HOSTED_ZONE_DOMAIN" {
 
 }
 
-variable "S3_BUCKET" {
+variable "CDN_URL" {
   type = string
 
 }

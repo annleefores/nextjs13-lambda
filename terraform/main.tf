@@ -2,7 +2,7 @@
 terraform {
   backend "s3" {
     bucket         = "tf-state-annlee"
-    key            = "terraform/frontend-nextjs/terraform.tfstate"
+    key            = "terraform/nextjs/terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "tf-state-lock"
     encrypt        = true

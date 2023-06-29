@@ -26,7 +26,7 @@ resource "aws_route53_record" "application_domain" {
   }
 }
 resource "aws_route53_record" "cloudfront_domain" {
-  name    = var.S3_BUCKET
+  name    = var.CDN_URL
   type    = "A"
   zone_id = data.aws_route53_zone.HostedZoneID.zone_id
 
