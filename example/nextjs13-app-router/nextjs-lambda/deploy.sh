@@ -3,7 +3,7 @@
 set -e # stop execution if anything fails
 
 # Add cdn domain address
-CDN_DOMAIN="cdn2.annleefores.cloud"
+CDN_DOMAIN="cdn.example.com"
 LAMBDA_FUNCTION_NAME="nextjs-app"
 
 
