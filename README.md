@@ -43,11 +43,23 @@ In the `deploy.sh` file, add the CDN domain address to the following line:
 CDN_NAME="<CDN_URL>"
 ```
 
-### Deployment
+### Deployment/Sync
 
-To deploy your application, run the `deploy.sh` script.
+To deploy the app, execute the `deploy.sh` bash script with argument `deploy`.
 
-### **Destroying the Deployment**
+```bash
+./deploy.sh deploy
+```
+
+Note that even after the deployment is complete, it may take some time for the CloudFront deployment to finish.
+
+To just sync files to Lambda and S3, execute the `deploy.sh` bash script with argument `sync`.
+
+```bash
+./deploy.sh sync
+```
+
+### Destroying the Deployment
 
 To destroy the deployment, navigate to the `nextjs-lambda/` folder and run the following command:
 
