@@ -37,9 +37,7 @@ variable "PORT" {
 }
 
 variable "REGION" {
-  type      = string
-  sensitive = true
-
+  type = string
 }
 
 variable "DOMAIN_NAME" {
