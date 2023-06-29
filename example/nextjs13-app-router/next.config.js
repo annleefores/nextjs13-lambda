@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: 'standalone',
-    assetPrefix: 'https://cdn2.annleefores.cloud',
+    assetPrefix: 'https://cdn.example.com',
 }
 
 module.exports = nextConfig

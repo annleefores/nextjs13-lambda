@@ -3,7 +3,7 @@
 set -e # stop execution if anything fails
 
 # change this for different cdn domain address
-CDN_NAME="cdn2.annleefores.cloud"
+CDN_NAME="cdn.example.com"
 
 # cd into terraform directory
 SOURCE=${BASH_SOURCE[0]}

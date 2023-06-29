@@ -2,10 +2,10 @@
 
 set -e # stop execution if anything fails
 
-# change this for different cdn domain address
+# Add cdn domain address
 CDN_NAME="<CDN_DOMAIN>"
 
-# cd into terraform directory
+# get the absolute file path
 SOURCE=${BASH_SOURCE[0]}
 while [ -L "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
   DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
@@ -24,7 +24,6 @@ echo "Building nextjs application"
 npm run build
 
 # Package files for deployment
-
 echo "packaging files"
 
 cp -r public/. .next/standalone/public
