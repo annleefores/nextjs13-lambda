@@ -70,3 +70,4 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+lambda_function_payload.zip

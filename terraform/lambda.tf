@@ -2,12 +2,11 @@
 # tflint-ignore: terraform_unused_declarations
 data "archive_file" "lambda" {
   type        = "zip"
-  source_dir  = "${path.module}/../"
+  source_dir  = "${path.module}/../.next/standalone/" # >> edit path to nextjs app root folder
   output_path = "lambda_function_payload.zip"
 }
 
 resource "aws_lambda_function" "nextjs" {
-  # Create with dummy zip file and upload files later
   filename      = "lambda_function_payload.zip"
   function_name = var.LAMBDA_FUNCTION_NAME
   role          = aws_iam_role.iam_for_lambda.arn
@@ -43,7 +42,7 @@ data "aws_iam_policy_document" "assume_role" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name               = "iam_for_lambda"
+  name               = "iam_for_lambda_nextjs"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -54,7 +53,7 @@ resource "aws_cloudwatch_log_group" "nextjs_log" {
 }
 
 # See also the following AWS managed policy: AWSLambdaBasicExecutionRole
-data "aws_iam_policy_document" "lambda_logging" {
+data "aws_iam_policy_document" "lambda_nextjs_logging" {
   statement {
     effect = "Allow"
 
@@ -69,10 +68,10 @@ data "aws_iam_policy_document" "lambda_logging" {
 }
 
 resource "aws_iam_policy" "lambda_logging" {
-  name        = "lambda_logging"
+  name        = "lambda_nextjs_logging"
   path        = "/"
   description = "IAM policy for logging from a lambda"
-  policy      = data.aws_iam_policy_document.lambda_logging.json
+  policy      = data.aws_iam_policy_document.lambda_nextjs_logging.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_logs" {
