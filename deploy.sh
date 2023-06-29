@@ -3,7 +3,20 @@
 set -e # stop execution if anything fails
 
 # Add cdn domain address
-CDN_NAME="<CDN_DOMAIN>"
+CDN_DOMAIN="<CDN_DOMAIN>"
+LAMBDA_FUNCTION_NAME="<LAMBDA_FUNCTION_NAME>"
+
+
+if [ "$1" -eq 0 ]; then
+    echo "No arguments provided. Please provide 'deploy' or 'sync' as an argument."
+    exit 1
+fi
+
+if [ "$1" != "deploy" ] && [ "$1" != "sync" ]; then
+    echo "Invalid argument. Please provide 'deploy' or 'sync' as an argument."
+    exit 1
+fi
+
 
 # get the absolute file path
 SOURCE=${BASH_SOURCE[0]}
@@ -14,6 +27,8 @@ while [ -L "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 
 DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+
+file_dir_name=$(basename "$DIR")
 
 cd $(dirname "$DIR")
 
@@ -27,22 +42,51 @@ npm run build
 echo "packaging files"
 
 cp -r public/. .next/standalone/public
-cp terraform/run.sh .next/standalone/
+cp $file_dir_name/run.sh .next/standalone/
 
-echo "provisioning infrastructure"
 
-cd terraform/
+if [ "$1" = "deploy" ]; then
+    echo "Running deploy command..."
 
-if [ ! -d ".terraform" ]
-then
-    echo "Terraform has not been initialized. Initializing now..."
-    terraform init
-else
-    echo "Terraform is already initialized"
+    echo "provisioning infrastructure"
+
+    cd $file_dir_name/
+
+    if [ ! -d ".terraform" ]
+    then
+        echo "Terraform has not been initialized. Initializing now..."
+        terraform init
+    else
+        echo "Terraform is already initialized"
+    fi
+
+    terraform validate
+    terraform apply -auto-approve
+
+
+elif [ "$1" = "sync" ]; then
+    echo "Running sync command..."
+
+    cd .next/standalone/
+
+    zip -r -q lambda_function_payload.zip .
+
+    echo "This might take a while..."
+
+    aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://lambda_function_payload.zip 1> /dev/null
+   
+    if [ $? -eq 0 ]
+    then
+      echo "Command executed successfully, continuing to next section."
+    else
+      echo "There was an error in executing the command."
+    fi
+
+    rm -rf lambda_function_payload.zip
+
+    cd $DIR
 fi
 
-terraform validate
-terraform apply -auto-approve
 
 # move to application folder and sync static files to CDN
 echo "syncing static files to S3"
@@ -50,4 +94,4 @@ echo "syncing static files to S3"
 cd ../
 
 # sync static files to S3 + Cloudfront
-aws s3 cp .next/static/ s3://$CDN_NAME/_next/static/ --recursive
+aws s3 cp .next/static/ s3://$CDN_DOMAIN/_next/static/ --recursive
