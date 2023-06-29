@@ -15,6 +15,8 @@ done
 
 DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 
+file_dir_name=$(basename "$DIR")
+
 cd $(dirname "$DIR")
 
 echo "Installing node modules"
@@ -24,15 +26,14 @@ echo "Building nextjs application"
 npm run build
 
 # Package files for deployment
-
 echo "packaging files"
 
 cp -r public/. .next/standalone/public
-cp terraform/run.sh .next/standalone/
+cp $file_dir_name/run.sh .next/standalone/
 
 echo "provisioning infrastructure"
 
-cd terraform/
+cd $file_dir_name/
 
 if [ ! -d ".terraform" ]
 then
