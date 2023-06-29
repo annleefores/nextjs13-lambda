@@ -67,4 +67,4 @@ To destroy the deployment, navigate to the `nextjs-lambda/` folder and run the f
 terraform destroy
 ```
 
-For more details and a comprehensive guide, refer to the article: [article_link].
+For more details and a comprehensive guide, refer to the article: [Streamline Deployment: Run NextJS 13 App on Lambda with AWS Lambda Web Adapter](https://annleefores.com/blog/run-nextjs-on-lambda).
