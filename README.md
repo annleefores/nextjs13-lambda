@@ -1,6 +1,6 @@
 # nextjs13-lambda
 
-This repository provides a quick and easy way to deploy a simple NextJS application on AWS Lambda using [aws-lambda-web-adapter](https://github.com/awslabs/aws-lambda-web-adapter).
+This repository provides a quick and easy way to deploy a simple Next.js application on AWS Lambda using [aws-lambda-web-adapter](https://github.com/awslabs/aws-lambda-web-adapter).
 
 ## Usage
 
@@ -9,9 +9,9 @@ Before you begin, make sure you have the following prerequisites installed:
 - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 - [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [add your AWS credentials](https://docs.aws.amazon.com/cli/latest/reference/configure/index.html)
 
-### Configuring NextJS App
+### Configuring Next.js App
 
-In your NextJS app, update the `next.config.js` file to build the application for standalone deployment by adding `output: 'standalone'`. Additionally, include the `assetPrefix` property to specify the CDN URL for serving static files:
+In your Next.js app, update the `next.config.js` file to build the application for standalone deployment by adding `output: 'standalone'`. Additionally, include the `assetPrefix` property to specify the CDN URL for serving static files:
 
 ```jsx
 const nextConfig = {
@@ -23,7 +23,7 @@ const nextConfig = {
 
 ### Cloning the Repository
 
-Clone this repository to the root of your NextJS application and remove any example files:
+Clone this repository to the root of your Next.js application and remove any example files:
 
 ```bash
 git clone --depth 1 https://github.com/annleefores/nextjs-lambda.git && \\
@@ -67,4 +67,4 @@ To destroy the deployment, navigate to the `nextjs-lambda/` folder and run the f
 terraform destroy
 ```
 
-For more details and a comprehensive guide, refer to the article: [Streamline Deployment: Run NextJS 13 App on Lambda with AWS Lambda Web Adapter](https://annleefores.com/blog/run-nextjs-on-lambda).
+For more details and a comprehensive guide, refer to the article: [Streamline Deployment: Run Next.js 13 App on Lambda with AWS Lambda Web Adapter](https://annleefores.com/blog/run-nextjs-on-lambda).
