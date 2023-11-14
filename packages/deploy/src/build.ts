@@ -1,43 +1,7 @@
-import { spawn } from "child_process";
 import path from "path";
 import fs from "fs";
-
-const filePath = () => {
-  const appPath = path.join(process.cwd(), ".");
-  const srcOrApp = fs.existsSync(path.join(appPath, "src")) ? "src/app" : "app";
-  const srcPath = path.join(appPath, srcOrApp);
-  return {
-    srcPath: srcPath,
-    publicPath: path.join(appPath, "public"),
-    appPath: appPath,
-    standaloneOutputPath: path.join(appPath, ".next", "standalone"),
-    staticOutputPath: path.join(appPath, ".next", "static"),
-  };
-};
-
-const term = (command: string): Promise<number> => {
-  return new Promise((resolve, reject) => {
-    const child = spawn(command, { shell: true });
-
-    child.stdout.on("data", (data) => {
-      console.log(`${data}`);
-    });
-
-    child.stderr.on("data", (data) => {
-      console.error(`${data}`);
-    });
-
-    child.on("close", (code) => {
-      console.log(`Nextjs build complete, code ${code}`);
-      resolve(code!);
-    });
-
-    child.on("error", (error) => {
-      console.error(`Error: ${error}`);
-      reject(error);
-    });
-  });
-};
+import { filePath } from "./utils";
+import { term } from "./utils";
 
 const nextjsBuild = async () => {
   console.log("Running Next Build......");
@@ -67,6 +31,8 @@ const nextPackage = () => {
 };
 
 const CreateRunScript = () => {
+  console.log("Creating run script.....");
+
   const { standaloneOutputPath } = filePath();
 
   // run bash script code
@@ -76,12 +42,11 @@ exec node server.js`;
 
   fs.writeFile(`${standaloneOutputPath}/run.sh`, script, (err) => {
     if (err) throw err;
-    console.log("Run script created successfully!");
   });
 };
 
 export const build = async () => {
-  await nextjsBuild();
+  //   await nextjsBuild();
   nextPackage();
   CreateRunScript();
 };
