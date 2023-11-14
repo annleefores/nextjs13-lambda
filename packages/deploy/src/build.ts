@@ -15,36 +15,38 @@ const filePath = () => {
   };
 };
 
-const term = (command: string) => {
-  const child = spawn(command, { shell: true });
+const term = (command: string): Promise<number> => {
+  return new Promise((resolve, reject) => {
+    const child = spawn(command, { shell: true });
 
-  child.stdout.on("data", (data) => {
-    console.log(`${data}`);
-  });
+    child.stdout.on("data", (data) => {
+      console.log(`${data}`);
+    });
 
-  child.stderr.on("data", (data) => {
-    console.error(`${data}`);
-  });
+    child.stderr.on("data", (data) => {
+      console.error(`${data}`);
+    });
 
-  child.on("close", (code) => {
-    console.log(`Nextjs build complete, code ${code}`);
+    child.on("close", (code) => {
+      console.log(`Nextjs build complete, code ${code}`);
+      resolve(code!);
+    });
+
+    child.on("error", (error) => {
+      console.error(`Error: ${error}`);
+      reject(error);
+    });
   });
 };
 
-const nextjsBuild = () => {
+const nextjsBuild = async () => {
   console.log("Running Next Build......");
-  term("npm run build");
+  await term("npm run build");
 };
 
 const nextPackage = () => {
   console.log("Copying static files.....");
-  const {
-    srcPath,
-    publicPath,
-    appPath,
-    standaloneOutputPath,
-    staticOutputPath,
-  } = filePath();
+  const { srcPath, publicPath, standaloneOutputPath } = filePath();
 
   const destPublic = path.join(standaloneOutputPath, "public");
 
@@ -62,14 +64,24 @@ const nextPackage = () => {
       fs.copyFileSync(faviconPath, path.join(destPublic, "favicon.ico"));
     }
   }
-  //   console.log(srcPath);
-  //   console.log(publicPath);
-  //   console.log(appPath);
-  //   console.log(standaloneOutputPath);
-  //   console.log(staticOutputPath);
 };
 
-export const build = () => {
-  //   nextjsBuild();
+const CreateRunScript = () => {
+  const { standaloneOutputPath } = filePath();
+
+  // run bash script code
+  const script = `#!/bin/bash
+[ ! -d '/tmp/cache' ] && mkdir -p /tmp/cache
+exec node server.js`;
+
+  fs.writeFile(`${standaloneOutputPath}/run.sh`, script, (err) => {
+    if (err) throw err;
+    console.log("Run script created successfully!");
+  });
+};
+
+export const build = async () => {
+  await nextjsBuild();
   nextPackage();
+  CreateRunScript();
 };
