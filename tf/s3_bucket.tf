@@ -53,3 +53,19 @@ data "aws_iam_policy_document" "s3_bucket_policy" {
     }
   }
 }
+
+locals {
+  STATIC_SRC = "${var.SOURCE_DIR}/static"
+}
+
+# Calculates hash of the files in static folder to trigger s3 file changes
+resource "null_resource" "s3_data" {
+  depends_on = [aws_s3_bucket.cdn_bucket]
+  triggers = {
+    src_hash = sha1(join("", [for f in fileset(local.STATIC_SRC, "**") : filesha1("${local.STATIC_SRC}/${f}")]))
+  }
+
+  provisioner "local-exec" {
+    command = "aws s3 rm s3://${var.CDN_URL}/_next/static/ --recursive --region ${var.REGION} && aws s3 cp ${local.STATIC_SRC} s3://${var.CDN_URL}/_next/static/ --recursive --region ${var.REGION}"
+  }
+}

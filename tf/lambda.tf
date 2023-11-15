@@ -1,9 +1,12 @@
 
+locals {
+  STANDALONE_SRC = "${var.SOURCE_DIR}/standalone"
+}
 # tflint-ignore: terraform_unused_declarations
 data "archive_file" "lambda" {
   type        = "zip"
-  source_dir  = var.SOURCE_DIR
-  output_path = "${var.SOURCE_DIR}/lambda_function_payload.zip"
+  source_dir  = local.STANDALONE_SRC
+  output_path = "${local.STANDALONE_SRC}/lambda_function_payload.zip"
 }
 
 # update lambda files on Next.js application file changes
@@ -22,8 +25,8 @@ resource "null_resource" "lambda_data_trigger" {
 data "archive_file" "lambda_dummy_file" {
   # Create a dummy lambda payload for initial lambda creation
   type        = "zip"
-  source_file = "${var.SOURCE_DIR}/run.sh"
-  output_path = "${var.SOURCE_DIR}/dummy_payload.zip"
+  source_file = "${local.STANDALONE_SRC}/run.sh"
+  output_path = "${local.STANDALONE_SRC}/dummy_payload.zip"
 }
 
 resource "aws_lambda_function" "nextjs" {
