@@ -1,34 +1,35 @@
 # nextjs13-lambda
 
-This repository provides a quick and easy way to deploy a simple Next.js application on AWS Lambda using [aws-lambda-web-adapter](https://github.com/awslabs/aws-lambda-web-adapter).
+This repository provides a quick and easy way to deploy a simple Next.js app router application on AWS Lambda using [aws-lambda-web-adapter](https://github.com/awslabs/aws-lambda-web-adapter).
 
 ## Usage
 
-Before you begin, make sure you have the following prerequisites installed:
+Before you start, ensure that you have the following prerequisites installed:
 
 - [Install Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
 - [Install AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [add your AWS credentials](https://docs.aws.amazon.com/cli/latest/reference/configure/index.html)
 
 ### Configuring Next.js App
 
-In your Next.js app, update the `next.config.js` file to build the application for standalone deployment by adding `output: 'standalone'`. Additionally, include the `assetPrefix` property to specify the CDN URL for serving static files:
+In your Next.js app, update the `next.config.js` file to build the application for standalone deployment by adding `output: 'standalone'`. Additionally, include the `assetPrefix` property to specify the CDN DOMAIN for serving static files:
 
 ```jsx
 const nextConfig = {
     output: 'standalone',
-    assetPrefix: 'https://<CDN_URL>',
+    assetPrefix: 'https://<CDN_DOMAIN>',
     // other code
 }
 ```
 
-## Contribution
+### Build and deploy
 
-- Clone this repo 
+#### Clone repo and build script
+- Clone this repository
 ```sh
 https://github.com/annleefores/nextjs13-lambda.git
 cd nextjs13-lambda
 ```
-- Change directory to deploy package
+- Navigate to the deploy script
 ```sh
 cd packages/deploy
 ```
@@ -45,8 +46,10 @@ npm run build
 npm run dev
 ```
 
-### Build and deploy
-
+#### Add env variable to tfvars
+- Create `terraform.tfvars` file based on the `terraform.tfvars.example` example file
+- Follow the comments to add required values
+- `terraform.tfvars` must be present in tf folder for the script to work
 #### Using external Next.js app
 
 - Build and deploy application
@@ -73,6 +76,7 @@ node path/to/nextjs13-lambda/packages/deploy/build/deploy.js build
 cd examples # from root directory
 node ../packages/deploy/build/deploy.js <command>
 ```
+
 
 ---
 
