@@ -45,32 +45,34 @@ npm run build
 npm run dev
 ```
 
-- To test Next.js build and deploy
-	- Using the example Next.js app
-	```sh
-	cd examples # from root directory
-	node ../packages/deploy/build/deploy.js
-	```
-	- Using external Next.js app
-	```sh
-	cd path/to/my/nextjs/app
-	node path/to/nextjs13-lambda/packages/deploy/build/deploy.js
-	```
+### Build and deploy
 
-- For testing just the build feature
+#### Using external Next.js app
+
+- Build and deploy application
+```sh
+cd path/to/my/nextjs/app
+node path/to/nextjs13-lambda/packages/deploy/build/deploy.js deploy
+```
+
+- Delete deployment
+```sh
+cd path/to/nextjs-app
+node path/to/nextjs13-lambda/packages/deploy/build/deploy.js delete
+```
+
+- Building application
 ```sh
 cd path/to/my/nextjs/app
 node path/to/nextjs13-lambda/packages/deploy/build/deploy.js build
 ```
 
-- For testing just the build feature
+#### Using the example Next.js app
+
 ```sh
-cd path/to/nextjs-app
-node path/to/nextjs13-lambda/packages/deploy/build/deploy.js deploy
+cd examples # from root directory
+node ../packages/deploy/build/deploy.js <command>
 ```
-
-
-### Destroying the Deployment
 
 ---
 
