@@ -54,7 +54,7 @@ variable "HOSTED_ZONE_DOMAIN" {
   type = string
 }
 
-variable "CDN_URL" {
+variable "CDN_DOMAIN" {
   type = string
 }
 

@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "cdn_bucket" {
-  bucket        = var.CDN_URL
+  bucket        = var.CDN_DOMAIN
   force_destroy = true
 
 
@@ -67,11 +67,11 @@ resource "null_resource" "s3_data" {
 
   # Deleted previous files from S3
   provisioner "local-exec" {
-    command = "echo 'Deleting old files....' && aws s3 rm s3://${var.CDN_URL}/_next/static/ --recursive --region ${var.REGION} >/dev/null"
+    command = "echo 'Deleting old files....' && aws s3 rm s3://${var.CDN_DOMAIN}/_next/static/ --recursive --region ${var.REGION} >/dev/null"
   }
   # Copy new files to S3
   provisioner "local-exec" {
-    command = "echo 'Copying new files....' && aws s3 cp ${local.STATIC_SRC} s3://${var.CDN_URL}/_next/static/ --recursive --region ${var.REGION} >/dev/null"
+    command = "echo 'Copying new files....' && aws s3 cp ${local.STATIC_SRC} s3://${var.CDN_DOMAIN}/_next/static/ --recursive --region ${var.REGION} >/dev/null"
   }
   # Create Cloudfront invalidation
   provisioner "local-exec" {
