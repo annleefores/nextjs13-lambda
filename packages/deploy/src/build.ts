@@ -46,7 +46,7 @@ exec node server.js`;
 };
 
 export const build = async () => {
-  //   await nextjsBuild();
+  await nextjsBuild();
   nextPackage();
   CreateRunScript();
 };
