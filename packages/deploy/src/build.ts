@@ -49,4 +49,5 @@ export const build = async () => {
   await nextjsBuild();
   nextPackage();
   CreateRunScript();
+  console.log("Build complete!");
 };

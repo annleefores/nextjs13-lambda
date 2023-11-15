@@ -6,12 +6,14 @@ export const filePath = () => {
   const appPath = path.join(process.cwd(), ".");
   const srcOrApp = fs.existsSync(path.join(appPath, "src")) ? "src/app" : "app";
   const srcPath = path.join(appPath, srcOrApp);
+  const basePath = path.join(process.cwd(), "../");
   return {
     srcPath: srcPath,
     publicPath: path.join(appPath, "public"),
     appPath: appPath,
     standaloneOutputPath: path.join(appPath, ".next", "standalone"),
     staticOutputPath: path.join(appPath, ".next", "static"),
+    tfPath: path.join(basePath, "tf"),
   };
 };
 
@@ -20,7 +22,7 @@ export const term = (command: string): Promise<number> => {
     const child = spawn(command, { shell: true });
 
     child.stdout.on("data", (data) => {
-      console.log(`${data}`);
+      process.stdout.write(`${data}`);
     });
 
     child.stderr.on("data", (data) => {
@@ -28,7 +30,6 @@ export const term = (command: string): Promise<number> => {
     });
 
     child.on("close", (code) => {
-      console.log(`Command run complete, ${code}`);
       resolve(code!);
     });
 
