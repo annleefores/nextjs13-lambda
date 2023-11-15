@@ -2,12 +2,33 @@
 # tflint-ignore: terraform_unused_declarations
 data "archive_file" "lambda" {
   type        = "zip"
-  source_dir  = "${path.module}/../.next/standalone/" # >> edit path to nextjs app root folder
-  output_path = "lambda_function_payload.zip"
+  source_dir  = var.SOURCE_DIR
+  output_path = "${var.SOURCE_DIR}/lambda_function_payload.zip"
+}
+
+# update lambda files on Next.js application file changes
+resource "null_resource" "lambda_data_trigger" {
+  depends_on = [aws_lambda_function.nextjs]
+  triggers = {
+    src_hash = data.archive_file.lambda.output_base64sha256
+  }
+
+  provisioner "local-exec" {
+    command = "aws lambda update-function-code --function-name ${var.LAMBDA_FUNCTION_NAME} --region ${var.REGION} --zip-file fileb://${data.archive_file.lambda.output_path}"
+  }
+}
+
+# tflint-ignore: terraform_unused_declarations
+data "archive_file" "lambda_dummy_file" {
+  # Create a dummy lambda payload for initial lambda creation
+  type        = "zip"
+  source_file = "${var.SOURCE_DIR}/run.sh"
+  output_path = "${var.SOURCE_DIR}/dummy_payload.zip"
 }
 
 resource "aws_lambda_function" "nextjs" {
-  filename      = "lambda_function_payload.zip"
+  # Creates a lambda functon with dummy payload which gets updated later with data.archive_file.lambda
+  filename      = data.archive_file.lambda_dummy_file.output_path
   function_name = var.LAMBDA_FUNCTION_NAME
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "run.sh"
@@ -16,7 +37,7 @@ resource "aws_lambda_function" "nextjs" {
   runtime       = var.NodeRuntime
   timeout       = var.timeout
   architectures = ["x86_64"]
-  layers        = ["arn:aws:lambda:${var.REGION}:753240598075:layer:LambdaAdapterLayerX86:16"]
+  layers        = ["arn:aws:lambda:${var.REGION}:753240598075:layer:LambdaAdapterLayerX86:17"]
   environment {
     variables = {
       AWS_LAMBDA_EXEC_WRAPPER = var.AWS_LAMBDA_EXEC_WRAPPER
@@ -25,7 +46,6 @@ resource "aws_lambda_function" "nextjs" {
       PORT : var.PORT
     }
   }
-
 }
 
 data "aws_iam_policy_document" "assume_role" {

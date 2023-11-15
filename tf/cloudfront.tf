@@ -31,7 +31,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   aliases = [var.CDN_URL]
 
   viewer_certificate {
-    acm_certificate_arn      = var.CERTIFICATE_ARN
+    acm_certificate_arn      = var.CLOUDFRONT_CERTIFICATE_ARN
     minimum_protocol_version = "TLSv1.2_2021"
     ssl_support_method       = "sni-only"
   }

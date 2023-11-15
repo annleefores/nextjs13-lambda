@@ -3,7 +3,7 @@ resource "aws_apigatewayv2_domain_name" "api_gw_domain" {
   domain_name = var.DOMAIN_NAME
 
   domain_name_configuration {
-    certificate_arn = var.CERTIFICATE_ARN
+    certificate_arn = var.API_GW_CERTIFICATE_ARN
     endpoint_type   = "REGIONAL"
     security_policy = "TLS_1_2"
   }
