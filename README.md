@@ -21,50 +21,57 @@ const nextConfig = {
 }
 ```
 
-### Cloning the Repository
+## Contribution
 
-Clone this repository to the root of your Next.js application and remove any example files:
-
-```bash
-git clone --depth 1 https://github.com/annleefores/nextjs-lambda.git && \\
-cd nextjs-lambda && \\
-git rm -r --cached example && rm -rf example
+- Clone this repo 
+```sh
+https://github.com/annleefores/nextjs13-lambda.git
+cd nextjs13-lambda
+```
+- Change directory to deploy package
+```sh
+cd packages/deploy
+```
+- Install dependencies
+```sh
+npm i
+```
+- Build deploy script
+```sh
+npm run build
+```
+- To run deploy script in dev mode
+```sh
+npm run dev
 ```
 
-### Configuration
+- To test Next.js build and deploy
+	- Using the example Next.js app
+	```sh
+	cd examples # from root directory
+	node ../packages/deploy/build/deploy.js
+	```
+	- Using external Next.js app
+	```sh
+	cd path/to/my/nextjs/app
+	node path/to/nextjs13-lambda/packages/deploy/build/deploy.js
+	```
 
-Update the `main.tf` file to use your preferred method for handling Terraform state.
-
-Create a `terraform.tfvars` file based on the provided `terraform.tfvars.example` file and add the necessary values.
-
-In the `deploy.sh` file, add the CDN domain address to the following line:
-
-```bash
-CDN_NAME="<CDN_URL>"
+- For testing just the build feature
+```sh
+cd path/to/my/nextjs/app
+node path/to/nextjs13-lambda/packages/deploy/build/deploy.js build
 ```
 
-### Deployment/Sync
-
-To deploy the app, execute the `deploy.sh` bash script with argument `deploy`.
-
-```bash
-./deploy.sh deploy
+- For testing just the build feature
+```sh
+cd path/to/nextjs-app
+node path/to/nextjs13-lambda/packages/deploy/build/deploy.js deploy
 ```
 
-Note that even after the deployment is complete, it may take some time for the CloudFront deployment to finish.
-
-To just sync files to Lambda and S3, execute the `deploy.sh` bash script with argument `sync`.
-
-```bash
-./deploy.sh sync
-```
 
 ### Destroying the Deployment
 
-To destroy the deployment, navigate to the `nextjs-lambda/` folder and run the following command:
+---
 
-```bash
-terraform destroy
-```
-
-For more details and a comprehensive guide, refer to the article: [Streamline Deployment: Run Next.js 13 App on Lambda with AWS Lambda Web Adapter](https://annleefores.com/blog/run-nextjs-on-lambda).
+For more details and a comprehensive guide, refer this article: [Run Next.js 13 App on Lambda with AWS Lambda Web Adapter](https://annleefores.com/blog/run-nextjs-on-lambda).
