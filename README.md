@@ -50,6 +50,8 @@ npm run dev
 - Create `terraform.tfvars` file based on the `terraform.tfvars.example` example file
 - Follow the comments to add required values
 - `terraform.tfvars` must be present in tf folder for the script to work
+- You can also use any of the env variable methods or Terraform listed [here](https://developer.hashicorp.com/terraform/language/values/variables#environment-variables)
+
 #### Using external Next.js app
 
 - Build and deploy application
