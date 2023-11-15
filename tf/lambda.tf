@@ -17,7 +17,7 @@ resource "null_resource" "lambda_data_trigger" {
   }
 
   provisioner "local-exec" {
-    command = "aws lambda update-function-code --function-name ${var.LAMBDA_FUNCTION_NAME} --region ${var.REGION} --zip-file fileb://${data.archive_file.lambda.output_path}"
+    command = "aws lambda update-function-code --function-name ${var.LAMBDA_FUNCTION_NAME} --region ${var.REGION} --zip-file fileb://${data.archive_file.lambda.output_path} >/dev/null"
   }
 }
 

@@ -65,7 +65,16 @@ resource "null_resource" "s3_data" {
     src_hash = sha1(join("", [for f in fileset(local.STATIC_SRC, "**") : filesha1("${local.STATIC_SRC}/${f}")]))
   }
 
+  # Deleted previous files from S3
   provisioner "local-exec" {
-    command = "aws s3 rm s3://${var.CDN_URL}/_next/static/ --recursive --region ${var.REGION} && aws s3 cp ${local.STATIC_SRC} s3://${var.CDN_URL}/_next/static/ --recursive --region ${var.REGION}"
+    command = "echo 'Deleting old files....' && aws s3 rm s3://${var.CDN_URL}/_next/static/ --recursive --region ${var.REGION} >/dev/null"
+  }
+  # Copy new files to S3
+  provisioner "local-exec" {
+    command = "echo 'Copying new files....' && aws s3 cp ${local.STATIC_SRC} s3://${var.CDN_URL}/_next/static/ --recursive --region ${var.REGION} >/dev/null"
+  }
+  # Create Cloudfront invalidation
+  provisioner "local-exec" {
+    command = "echo 'Creating cloudfront invalidation....' &&  aws cloudfront create-invalidation --distribution-id ${aws_cloudfront_distribution.s3_distribution.id} --paths /_next/static/** >/dev/null"
   }
 }
