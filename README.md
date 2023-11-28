@@ -81,5 +81,3 @@ node ../packages/deploy/build/deploy.js <command>
 
 
 ---
-
-For more details and a comprehensive guide, refer this article: [Run Next.js 13 App on Lambda with AWS Lambda Web Adapter](https://annleefores.com/blog/run-nextjs-on-lambda).
