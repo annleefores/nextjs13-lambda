@@ -10,7 +10,6 @@ const del = async () => {
   await tfDelete();
 };
 
-//Todo: Configure Deploy, Build, Delete conditionals
 
 const run = () => {
   const args = process.argv.slice(2);
